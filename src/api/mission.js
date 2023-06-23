@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageSelectMenu, MessageButton } = require("discord.js");
+const { ActionRowBuilder, StringSelectMenuBuilder, ButtonBuilder } = require("discord.js");
 const { dmChannelByID } = require("../helpers/sendChannelMessage");
 const { dmUserByID } = require("../helpers/userDM");
 const { Games } = require("../models/games");
@@ -16,16 +16,16 @@ const sendPassFailOptions = async (serverID) => {
         const { discordID, hasMagicToken, character } = player;
         const failDisabled = hasMagicToken && character !== characters.MORGAN;
 
-        const row = new MessageActionRow()
+        const row = new ActionRowBuilder()
             .addComponents(
-                new MessageButton()
+                new ButtonBuilder()
                     .setCustomId(`pass ${serverID}`)
                     .setLabel("Pass")
-                    .setStyle("SUCCESS"),
-                new MessageButton()
+                    .setStyle("Success"),
+                new ButtonBuilder()
                     .setCustomId(`fail ${serverID}`)
                     .setLabel("Fail")
-                    .setStyle("DANGER")
+                    .setStyle("Danger")
                     .setDisabled(failDisabled),
             );
         let content = "Choose whether to pass or fail this mission.";
@@ -74,9 +74,9 @@ const chooseNewLeader = async (serverID) => {
         }
     }));
 
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
     .addComponents(
-        new MessageSelectMenu()
+        new StringSelectMenuBuilder()
             .setCustomId(`newLeader ${serverID}`)
             .setPlaceholder('Nothing selected')
             .addOptions(options),

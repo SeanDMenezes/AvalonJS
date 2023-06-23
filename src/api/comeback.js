@@ -1,4 +1,4 @@
-const { MessageActionRow, MessageSelectMenu } = require("discord.js");
+const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { dmChannelByID } = require("../helpers/sendChannelMessage");
 const { dmUserByID } = require("../helpers/userDM");
 const { Games } = require("../models/games");
@@ -23,9 +23,9 @@ const sendComebackOptions = async (serverID) => {
         }
     }));
 
-    const row = new MessageActionRow()
+    const row = new ActionRowBuilder()
     .addComponents(
-        new MessageSelectMenu()
+        new StringSelectMenuBuilder()
             .setCustomId(`comebackMechanic ${serverID}`)
             .setPlaceholder('Nothing selected')
             .setMinValues(2)

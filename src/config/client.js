@@ -1,9 +1,9 @@
 // Require the necessary discord.js classes
-const { Client, Intents } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 
 // Create a new client instance
 const client = new Client({
-    intents: [Intents.FLAGS.GUILDS]
+    intents: [GatewayIntentBits.Guilds]
 });
 
 client.on('interactionCreate', async interaction => {

@@ -1,6 +1,6 @@
 const { handleComebackMechanic } = require("../api/comeback");
 const { handlePassFail, handleLeaderSelection } = require("../api/mission");
-const { handleMissonParticipants, handleMagicToken } = require("../api/missionSelect");
+const { handleMissionParticipants, handleMagicToken } = require("../api/missionSelect");
 const { getPlayerName, getPlayerDiscordID } = require("../api/player");
 
 const handleSelectInteractions = async (interaction) => {
@@ -9,7 +9,7 @@ const handleSelectInteractions = async (interaction) => {
         const { customId, values } = interaction;
         const customIdList = customId.split(" ");
         const guildId = customIdList[customIdList.length - 1];
-		await handleMissonParticipants(guildId, values);
+		await handleMissionParticipants(guildId, values);
         const playerNames = await Promise.all(values.map(async playerID => await getPlayerName(playerID)));
         return await interaction.editReply({ content: `You have chosen ${playerNames.join(", ")} to be on the mission.`, components: [] });
 	}

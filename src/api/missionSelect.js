@@ -1,12 +1,12 @@
-const { MessageActionRow, MessageSelectMenu, MessageButton } = require("discord.js");
+const { ActionRowBuilder, StringSelectMenuBuilder } = require("discord.js");
 const { dmChannelByID } = require("../helpers/sendChannelMessage");
 const { dmUserByID } = require("../helpers/userDM");
 const { Games } = require("../models/games");
 const { Players } = require("../models/players");
 const missionNumbers = require("../types/missionNumbers");
-const { getPlayerName, getPlayerDiscordID } = require("./player");
+const { getPlayerDiscordID } = require("./player");
 
-const handleMissonParticipants = async (serverID, players) => {
+const handleMissionParticipants = async (serverID, players) => {
     const updatedGame = await Games.findOneAndUpdate({ serverID }, 
         { onMission: players }
     );
@@ -43,15 +43,15 @@ const sendLeaderOptions = async (serverID) => {
         }
     }));
 
-    const row = new MessageActionRow()
-    .addComponents(
-        new MessageSelectMenu()
-            .setCustomId(`missionParticipants ${serverID}`)
-            .setPlaceholder('Nothing selected')
-            .setMinValues(requiredParticipants)
-            .setMaxValues(requiredParticipants)
-            .addOptions(options),
-    );
+    const row = new ActionRowBuilder()
+        .addComponents(
+            new StringSelectMenuBuilder()
+                .setCustomId(`missionParticipants ${serverID}`)
+                .setPlaceholder('Nothing selected')
+                .setMinValues(requiredParticipants)
+                .setMaxValues(requiredParticipants)
+                .addOptions(options),
+        );
     return await dmUserByID(discordID, { content: `Choose ${requiredParticipants} for this mission`, components: [row] });
 }
 
@@ -72,13 +72,13 @@ const sendMagicTokenOptions = async (serverID) => {
         }
     }));
 
-    const row = new MessageActionRow()
-    .addComponents(
-        new MessageSelectMenu()
-            .setCustomId(`magicToken ${serverID}`)
-            .setPlaceholder('Nothing selected')
-            .addOptions(options),
-    );
+    const row = new ActionRowBuilder()
+        .addComponents(
+            new StringSelectMenuBuilder()
+                .setCustomId(`magicToken ${serverID}`)
+                .setPlaceholder('Nothing selected')
+                .addOptions(options),
+        );
     return await dmUserByID(discordID, { content: `Choose who should have the magic token for this mission:`, components: [row] });
 }
 
@@ -92,4 +92,4 @@ const sendMissionSelections = async (serverID, channelID) => {
     return await dmChannelByID(channelID, { content });
 }
 
-module.exports = { handleMissonParticipants, handleMagicToken, sendLeaderOptions, sendMagicTokenOptions, sendMissionSelections };
+module.exports = { handleMissionParticipants, handleMagicToken, sendLeaderOptions, sendMagicTokenOptions, sendMissionSelections };

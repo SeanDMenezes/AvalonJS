@@ -21,14 +21,15 @@ const assignRoles = async (serverID) => {
         // shuffle available roles and players, randomly assign them
         const shuffledRoles = rolesInPlay.sort(() => Math.random() - 0.5);
         const shuffledPlayers = players.sort(() => Math.random() - 0.5);
-        shuffledPlayers.forEach(async (playerId, i) => {
-            const player = await Players.findById(playerId);
+        for (let i = 0; i < shuffledPlayers.length; ++i) {
+            const playerID = shuffledPlayers[i];
+            const player = await Players.findById(playerID);
             const role = shuffledRoles[i];
             const { name, allegiance } = role;
             player.character = name;
             player.allegiance = allegiance;
             await player.save();
-        });
+        }
 
         // randomly assign leader
         const leaderIndex = Math.floor(Math.random() * 4);
@@ -58,7 +59,6 @@ const messageRoles = async (serverID) => {
                     break;
                 case characters.MORGAN:
                     const scion = evilList.find(({ character }) => character === characters.SCION);
-                    // console.log(scion);
                     message += ` The other spy is ${scion.discordName}`;
                     break;
                 default:

@@ -18,7 +18,7 @@ const { Collection } = require('discord.js');
 const { client } = require("./src/config/client");
 const { handleSelectInteractions, handleButtonInteractions } = require("./src/selectMenuInteractions/interactions");
 
-// Loading commmands from the commands folder
+// Loading commands from the commands folder
 const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
 const eventFiles = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'));
 const commands = [];
@@ -74,7 +74,7 @@ client.once('ready', () => {
 
 // select menu and button handler
 client.on('interactionCreate', async interaction => {
-    if (interaction.isSelectMenu()) return await handleSelectInteractions(interaction);
+    if (interaction.isStringSelectMenu()) return await handleSelectInteractions(interaction);
     if (interaction.isButton()) return await handleButtonInteractions(interaction);
     else return;
 });

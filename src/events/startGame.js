@@ -1,14 +1,12 @@
-const { MessageActionRow, MessageSelectMenu } = require('discord.js');
 const { sendComebackOptions, sendComebackGuesses, comebackSuccessful } = require('../api/comeback');
 const { analyzeAndUpdateGame, resetGame } = require('../api/game');
 const { sendPassFailOptions, sendMissionStatus, chooseNewLeader } = require('../api/mission');
 const { sendLeaderOptions, sendMagicTokenOptions, sendMissionSelections } = require('../api/missionSelect');
-const { getPlayerName, getPlayerDiscordID } = require('../api/player');
+const { getPlayerDiscordID } = require('../api/player');
 const { sendFinalRoles } = require('../api/role');
 const { dmChannelByID } = require('../helpers/sendChannelMessage');
 const { waitFor } = require('../helpers/waitFor');
 const { Games } = require("../models/games");
-const { Players } = require("../models/players");
 const missionNumbers = require('../types/missionNumbers');
 
 module.exports = {
@@ -100,7 +98,7 @@ module.exports = {
 
                 await sendComebackGuesses(serverID, channelID);
                 if (await comebackSuccessful(serverID)) {
-                    content = `Resistance wins the game!`;
+                    content = `Both good players have correctly identified the evil players. Resistance wins the game!`;
                     await dmChannelByID(channelID, { content });
                 } else {
                     content = `Spies win the game!`;
@@ -113,7 +111,7 @@ module.exports = {
             }
 
             await sendFinalRoles(serverID, channelID);
-            await resetGame();
+            await resetGame(serverID);
         } catch (err) {
             console.error(err);
             return { error: err };

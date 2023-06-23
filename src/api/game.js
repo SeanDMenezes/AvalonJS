@@ -1,6 +1,5 @@
 const { Games } = require("../models/games");
 const { Players } = require("../models/players");
-const allegiances = require("../types/allegiances");
 const ALLEGIANCES = require("../types/allegiances");
 const CHARACTERS = require("../types/characters");
 const { getPlayerDiscordID } = require("./player");
